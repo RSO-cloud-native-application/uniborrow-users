@@ -1,0 +1,14 @@
+kumuluzee:
+  name: izposojevalnica-users-service
+  env:
+    name: dev
+  version: 1.0.0
+  server:
+    base-location: http://localhost:8080
+    http:
+      port: 8080
+  datasources:
+    - jndi-name: jdbc/UsersDB
+      connection-url: jdbc:postgresql://localhost:5432/users
+      username: dbuser
+      password: postgres
