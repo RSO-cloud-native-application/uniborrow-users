@@ -27,7 +27,6 @@ public class UsersResource {
 
     @GET
     public Response getUsers() {
-        log.info("Got a get request!");
         List<User> users = userBean.getUsers();
         return Response.status(200).entity(users).build();
     }
