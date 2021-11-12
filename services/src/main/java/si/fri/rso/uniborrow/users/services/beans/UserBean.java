@@ -8,6 +8,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
+import javax.ws.rs.NotFoundException;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -25,5 +26,14 @@ public class UserBean {
                 em.createNamedQuery("UserEntity.getAll", UserEntity.class);
         List<UserEntity> resultList = query.getResultList();
         return resultList.stream().map(UserConverter::toDto).collect(Collectors.toList());
+    }
+
+    public User getUser(Integer id) {
+        UserEntity userEntity = em.find(UserEntity.class, id);
+        if (userEntity == null) {
+            throw new NotFoundException();
+        }
+        User user = UserConverter.toDto(userEntity);
+        return user;
     }
 }

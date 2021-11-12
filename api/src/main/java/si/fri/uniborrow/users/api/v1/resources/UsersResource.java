@@ -5,10 +5,7 @@ import si.fri.rso.uniborrow.users.services.beans.UserBean;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.List;
@@ -29,5 +26,15 @@ public class UsersResource {
     public Response getUsers() {
         List<User> users = userBean.getUsers();
         return Response.status(200).entity(users).build();
+    }
+
+    @GET
+    @Path("/{userId}")
+    public Response getUser(@PathParam("userId") Integer userId) {
+        User user = userBean.getUser(userId);
+        if (user == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.status(Response.Status.OK).entity(user).build();
     }
 }
