@@ -1,4 +1,4 @@
-# RSO - Users service
+# Uniborrow - Users service
 
 ## Description
 
@@ -18,7 +18,7 @@ The service is built with KumuluzEE. It consists of 4 modules:
 To set the database:
 
 ```
-docker run --name rso-users-db \
+docker run --name uniborrow-users-db \
     -e POSTGRES_DB=users \
     -e POSTGRES_PASSWORD=postgres \ 
     -e POSTGRES_USER=dbuser \ 
