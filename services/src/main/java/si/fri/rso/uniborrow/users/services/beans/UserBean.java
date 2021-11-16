@@ -33,7 +33,88 @@ public class UserBean {
         if (userEntity == null) {
             throw new NotFoundException();
         }
-        User user = UserConverter.toDto(userEntity);
-        return user;
+        return UserConverter.toDto(userEntity);
+    }
+
+    public User createUser(User user) {
+        UserEntity userEntity = UserConverter.toEntity(user);
+        try {
+            beginTransaction();
+            em.persist(userEntity);
+            commitTransaction();
+        } catch (Exception e) {
+            log.warning(e.getMessage());
+            rollbackTransaction();
+        }
+
+        if (userEntity.getId() == null) {
+            log.warning("Failed to create a user!");
+            return null;
+        }
+        return UserConverter.toDto(userEntity);
+    }
+
+    public User putUser(User user, Integer id) {
+        UserEntity userEntity = em.find(UserEntity.class, id);
+        if (userEntity == null) {
+            return null;
+        }
+
+        UserEntity updatedUserEntity = UserConverter.toEntity(user);
+        try {
+            beginTransaction();
+            if (updatedUserEntity.getEmail() == null) {
+                updatedUserEntity.setEmail(userEntity.getEmail());
+            }
+            if (updatedUserEntity.getFirstName() == null) {
+                updatedUserEntity.setFirstName(userEntity.getFirstName());
+            }
+            if (updatedUserEntity.getLastName() == null) {
+                updatedUserEntity.setLastName(userEntity.getFirstName());
+            }
+            updatedUserEntity.setId(userEntity.getId());
+            updatedUserEntity = em.merge(updatedUserEntity);
+            commitTransaction();
+        } catch (Exception e) {
+            rollbackTransaction();
+            log.warning(e.getMessage());
+            return null;
+        }
+        return UserConverter.toDto(updatedUserEntity);
+    }
+
+    public boolean deleteUser(Integer id) {
+        UserEntity userEntity = em.find(UserEntity.class, id);
+        if (userEntity == null) {
+            return false;
+        }
+        try {
+            beginTransaction();
+            em.remove(userEntity);
+            commitTransaction();
+        } catch (Exception e) {
+            rollbackTransaction();
+            log.warning(e.getMessage());
+            return false;
+        }
+        return true;
+    }
+
+    private void beginTransaction() {
+        if (!em.getTransaction().isActive()) {
+            em.getTransaction().begin();
+        }
+    }
+
+    private void commitTransaction() {
+        if (em.getTransaction().isActive()) {
+            em.getTransaction().commit();
+        }
+    }
+
+    private  void rollbackTransaction() {
+        if (em.getTransaction().isActive()) {
+            em.getTransaction().rollback();
+        }
     }
 }

@@ -1,5 +1,5 @@
 kumuluzee:
-  name: izposojevalnica-users-service
+  name: uniborrow-users-service
   env:
     name: dev
   version: 1.0.0
@@ -12,3 +12,9 @@ kumuluzee:
       connection-url: jdbc:postgresql://localhost:5432/users
       username: dbuser
       password: postgres
+  config:
+    start-retry-delay-ms: 500
+    max-retry-delay-ms: 900000
+admin-properties:
+  restrict-users: false
+  disable-users: false

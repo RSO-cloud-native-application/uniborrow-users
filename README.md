@@ -2,7 +2,8 @@
 
 ## Description
 
-The service handles user interaction. It currently supports listing all users.
+The service handles user interaction. It currently supports all CRUD operations
+for users.
 
 ## Structure
 
@@ -25,3 +26,10 @@ docker run --name uniborrow-users-db \
     -p 5432:5432 \
     postgres:13
 ```
+
+To set Consul:
+```
+consul agent -dev
+```
+
+The keys are of type:  `environments/dev/services/uniborrow-users-service/1.0.0/config`
