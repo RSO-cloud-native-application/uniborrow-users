@@ -63,6 +63,26 @@ public class UserBean {
         UserEntity updatedUserEntity = UserConverter.toEntity(user);
         try {
             beginTransaction();
+            updatedUserEntity.setId(userEntity.getId());
+            updatedUserEntity = em.merge(updatedUserEntity);
+            commitTransaction();
+        } catch (Exception e) {
+            rollbackTransaction();
+            log.warning(e.getMessage());
+            return null;
+        }
+        return UserConverter.toDto(updatedUserEntity);
+    }
+
+    public User patchUser(User user, Integer id) {
+        UserEntity userEntity = em.find(UserEntity.class, id);
+        if (userEntity == null) {
+            return null;
+        }
+
+        UserEntity updatedUserEntity = UserConverter.toEntity(user);
+        try {
+            beginTransaction();
             if (updatedUserEntity.getEmail() == null) {
                 updatedUserEntity.setEmail(userEntity.getEmail());
             }

@@ -50,7 +50,7 @@ public class UsersResource {
     @POST
     public Response createUser(User user) {
         if (adminProperties.getRestrictUsers()) {
-            return Response.status(Response.Status.FORBIDDEN).build();
+            return Response.status(Response.Status.METHOD_NOT_ALLOWED).build();
         }
 
         if (user == null || user.getEmail() == null || user.getFirstName() == null || user.getLastName() == null) {
@@ -68,21 +68,34 @@ public class UsersResource {
     @Path("{userId}")
     public Response updateUser(User user, @PathParam("userId") Integer userId) {
         if (adminProperties.getRestrictUsers()) {
-            return Response.status(Response.Status.FORBIDDEN).build();
+            return Response.status(Response.Status.METHOD_NOT_ALLOWED).build();
         }
 
         user = userBean.putUser(user, userId);
         if (user == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.status(Response.Status.NOT_MODIFIED).build();
+        return Response.status(Response.Status.OK).build();
+    }
+
+    @PATCH
+    @Path("{userId}")
+    public Response patchUser(User user, @PathParam("userId") Integer userId) {
+        if (adminProperties.getRestrictUsers()) {
+            return Response.status(Response.Status.METHOD_NOT_ALLOWED).build();
+        }
+        user = userBean.patchUser(user, userId);
+        if (user == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.status(Response.Status.OK).build();
     }
 
     @DELETE
     @Path("{userId}")
     public Response deleteUser(@PathParam("userId") Integer userId) {
         if (adminProperties.getRestrictUsers()) {
-            return Response.status(Response.Status.FORBIDDEN).build();
+            return Response.status(Response.Status.METHOD_NOT_ALLOWED).build();
         }
 
         boolean isSuccessful = userBean.deleteUser(userId);
