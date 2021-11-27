@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uniborrow-users-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: uniborrow-users
+  template:
+    metadata:
+      labels:
+        app: uniborrow-users
+    spec:
+      containers:
+        - image: lh5107/uniborrow-users:2021-11-27-23-34-28
+          name: image-catalog
+          env:
+            - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
+              value: jdbc:postgresql://surus.db.elephantsql.com:5432/jsyabbvk
+            - name: KUMULUZEE_DATASOURCES0_USERNAME
+              value: jsyabbvk
+            - name: KUMULUZEE_DATASOURCES0_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: uniborrow-users-db-pass
+                  key: password
+          ports:
+            - containerPort: 8080
+              name: server
+              protocol: TCP
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: uniborrow-users
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: server
+  selector:
+    app: uniborrow-users
