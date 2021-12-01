@@ -13,7 +13,7 @@ spec:
         app: uniborrow-users
     spec:
       containers:
-        - image: lh5107/uniborrow-users:2021-11-27-23-34-28
+        - image: lh5107/uniborrow-users:2021-12-02-01-33-36
           name: image-catalog
           env:
             - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
@@ -25,10 +25,24 @@ spec:
                 secretKeyRef:
                   name: uniborrow-users-db-pass
                   key: password
+            - name: KUMULUZEE_CONFIG_CONSUL_AGENT
+              value: http://consul-consul-server:8500
           ports:
             - containerPort: 8080
               name: server
               protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /health/live
+              port: server
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health/ready
+              port: server
+            initialDelaySeconds: 30
+            periodSeconds: 10
 ---
 
 apiVersion: v1

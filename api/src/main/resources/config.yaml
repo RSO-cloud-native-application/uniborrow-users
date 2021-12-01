@@ -13,6 +13,8 @@ kumuluzee:
       username: dbuser
       password: postgres
   config:
+    consul:
+      agent: http://localhost:8500
     start-retry-delay-ms: 500
     max-retry-delay-ms: 900000
   health:
