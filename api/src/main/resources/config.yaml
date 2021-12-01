@@ -15,6 +15,12 @@ kumuluzee:
   config:
     start-retry-delay-ms: 500
     max-retry-delay-ms: 900000
+  health:
+    checks:
+      data-source-health-check:
+        type: liveness
+        jndi-name: jdbc/UsersDB
 admin-properties:
   restrict-users: false
   disable-users: false
+  broken: false

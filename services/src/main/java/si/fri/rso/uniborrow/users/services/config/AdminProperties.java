@@ -16,6 +16,9 @@ public class AdminProperties {
     @ConfigValue(watch = true)
     private Boolean disableUsers;
 
+    @ConfigValue(watch = true)
+    private Boolean broken;
+
     public Boolean getRestrictUsers() {
         return restrictUsers;
     }
@@ -30,5 +33,13 @@ public class AdminProperties {
 
     public void setDisableUsers(Boolean disableUsers) {
         this.disableUsers = disableUsers;
+    }
+
+    public Boolean getBroken() {
+        return broken;
+    }
+
+    public void setBroken(Boolean broken) {
+        this.broken = broken;
     }
 }
