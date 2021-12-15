@@ -22,6 +22,17 @@ kumuluzee:
       data-source-health-check:
         type: liveness
         jndi-name: jdbc/UsersDB
+  metrics:
+    servlet:
+      enabled: true
+      mapping: /metrics/*
+    web-instrumentation:
+      - name: metrics-endpoint
+        url-pattern: /metrics/*
+        status-codes: "200, 500"
+      - name: users-endpoint
+        url-pattern: /v1/users*
+        status-codes: "200, 500"
 admin-properties:
   restrict-users: false
   disable-users: false

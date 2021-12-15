@@ -1,5 +1,8 @@
 package si.fri.uniborrow.users.api.v1.resources;
 
+import org.eclipse.microprofile.metrics.ConcurrentGauge;
+import org.eclipse.microprofile.metrics.annotation.Metered;
+import org.eclipse.microprofile.metrics.annotation.Metric;
 import si.fri.rso.uniborrow.users.lib.User;
 import si.fri.rso.uniborrow.users.services.beans.UserBean;
 import si.fri.rso.uniborrow.users.services.config.AdminProperties;
@@ -31,7 +34,12 @@ public class UsersResource {
     @Context
     protected UriInfo uriInfo;
 
+    @Inject
+    @Metric(name = "users_counter")
+    private ConcurrentGauge userCounter;
+
     @GET
+    @Metered(name = "users_requests")
     public Response getUsers() {
         List<User> users = userBean.getUsers();
         return Response.status(200).entity(users).build();
@@ -39,6 +47,7 @@ public class UsersResource {
 
     @GET
     @Path("/{userId}")
+    @Metered(name = "user_requests")
     public Response getUser(@PathParam("userId") Integer userId) {
         User user = userBean.getUser(userId);
         if (user == null) {
@@ -49,6 +58,7 @@ public class UsersResource {
 
     @POST
     public Response createUser(User user) {
+        userCounter.inc();
         if (adminProperties.getRestrictUsers()) {
             return Response.status(Response.Status.METHOD_NOT_ALLOWED).build();
         }
@@ -94,6 +104,7 @@ public class UsersResource {
     @DELETE
     @Path("{userId}")
     public Response deleteUser(@PathParam("userId") Integer userId) {
+        userCounter.dec();
         if (adminProperties.getRestrictUsers()) {
             return Response.status(Response.Status.METHOD_NOT_ALLOWED).build();
         }
