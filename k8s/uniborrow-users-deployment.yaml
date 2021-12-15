@@ -13,7 +13,7 @@ spec:
         app: uniborrow-users
     spec:
       containers:
-        - image: lh5107/uniborrow-users:2021-12-02-01-33-36
+        - image: lh5107/uniborrow-users:2021-12-16-02-07-39
           name: image-catalog
           env:
             - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
@@ -50,10 +50,8 @@ kind: Service
 metadata:
   name: uniborrow-users
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   ports:
     - port: 8080
-      protocol: TCP
-      targetPort: server
   selector:
     app: uniborrow-users
