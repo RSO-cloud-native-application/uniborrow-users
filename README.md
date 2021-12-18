@@ -14,6 +14,11 @@ The service is built with KumuluzEE. It consists of 4 modules:
 * `models`: Defines entities and connection to the database.
 * `lib`: Definition of data the service uses.
 
+### Sevice discovery
+
+The service name for service discovery is `uniborrow-users-service`
+with environment `dev`.
+
 ## Prerequisites
 
 To set the database:
