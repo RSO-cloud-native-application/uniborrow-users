@@ -17,6 +17,9 @@ kumuluzee:
       agent: http://localhost:8500
     start-retry-delay-ms: 500
     max-retry-delay-ms: 900000
+  discovery:
+    consul:
+      agent: http://localhost:8500
   health:
     checks:
       data-source-health-check:
