@@ -13,7 +13,7 @@ spec:
         app: uniborrow-users
     spec:
       containers:
-        - image: lh5107/uniborrow-users:2021-12-20-05-46-17
+        - image: lh5107/uniborrow-users:2021-12-23-01-56-31
           name: uniborrow-users
           env:
             - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL
@@ -26,9 +26,9 @@ spec:
                   name: uniborrow-users-db-pass
                   key: password
             - name: KUMULUZEE_CONFIG_CONSUL_AGENT
-              value: http://consul-consul-server:8500
+              value: http://consul-server:8500
             - name: KUMULUZEE_DISCOVERY_CONSUL_AGENT
-              value: http://consul-consul-server:8500
+              value: http://consul-server:8500
             - name: KUMULUZEE_DISCOVERY_CLUSTER
               value: uniborrow-cluster
           ports:
