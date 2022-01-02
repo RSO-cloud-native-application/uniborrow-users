@@ -36,7 +36,7 @@ public class LoginResource {
         }
         User loggedInUser = userBean.getUser(userLogin.getUsername());
         return loggedInUser != null
-                ? Response.status(Response.Status.CREATED).entity(loggedInUser).build()
+                ? Response.status(Response.Status.OK).entity(loggedInUser).build()
                 : Response.status(Response.Status.NOT_FOUND).build();
     }
 }
