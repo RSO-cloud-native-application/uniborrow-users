@@ -1,3 +1,3 @@
-INSERT INTO users (firstname, lastname, email) VALUES ('John', 'Doe', 'john.doe@mail.com');
-INSERT INTO users (firstname, lastname, email) VALUES ('Allan', 'Smith', 'allan.smith@mail.com');
-INSERT INTO users (firstname, lastname, email) VALUES ('Jane', 'Smith', 'jane.smith@mail.com');
+INSERT INTO users (username, firstname, lastname, email) VALUES ('JDoe', 'John', 'Doe', 'john.doe@mail.com');
+INSERT INTO users (username, firstname, lastname, email) VALUES ('allan.smith', 'Allan', 'Smith', 'allan.smith@mail.com');
+INSERT INTO users (username, firstname, lastname, email) VALUES ('smitthy', 'Jane', 'Smith', 'jane.smith@mail.com');

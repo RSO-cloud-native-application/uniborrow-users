@@ -65,15 +65,22 @@ public class UsersResource {
             return Response.status(Response.Status.METHOD_NOT_ALLOWED).build();
         }
 
-        if (user == null || user.getEmail() == null || user.getFirstName() == null || user.getLastName() == null) {
+        if (user == null || user.getEmail() == null || user.getFirstName() == null
+                || user.getLastName() == null || user.getUsername() == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        User createdUser = userBean.createUser(user);
-        if (createdUser == null) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+        try {
+            User createdUser = userBean.createUser(user);
+            if (createdUser == null) {
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            }
+            return Response.status(Response.Status.CREATED).entity(createdUser).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{ \"message\" : \"User already exists!\"}")
+                    .build();
         }
-        return Response.status(Response.Status.CREATED).entity(createdUser).build();
     }
 
     @PUT

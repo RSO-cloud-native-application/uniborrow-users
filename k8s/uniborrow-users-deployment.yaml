@@ -13,7 +13,7 @@ spec:
         app: uniborrow-users
     spec:
       containers:
-        - image: lh5107/uniborrow-users:2021-12-31-03-29-19
+        - image: lh5107/uniborrow-users:2022-01-01-20-09-04
           name: uniborrow-users
           env:
             - name: KUMULUZEE_DATASOURCES0_CONNECTIONURL

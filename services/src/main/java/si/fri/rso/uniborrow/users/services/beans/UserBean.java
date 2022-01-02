@@ -36,7 +36,20 @@ public class UserBean {
         return UserConverter.toDto(userEntity);
     }
 
-    public User createUser(User user) {
+    public User getUser(String username) {
+        TypedQuery<UserEntity> query =
+                em.createNamedQuery("UserEntity.getByUsername", UserEntity.class)
+                        .setParameter("username", username);
+        List<UserEntity> userEntities = query.getResultList();
+        return userEntities.isEmpty()
+                ? null
+                : UserConverter.toDto(userEntities.get(0));
+    }
+
+    public User createUser(User user) throws Exception {
+        if (getUser(user.getUsername()) != null) {
+            throw new Exception("User exists");
+        }
         UserEntity userEntity = UserConverter.toEntity(user);
         try {
             beginTransaction();
@@ -91,6 +104,9 @@ public class UserBean {
             }
             if (updatedUserEntity.getLastName() == null) {
                 updatedUserEntity.setLastName(userEntity.getFirstName());
+            }
+            if (updatedUserEntity.getUsername() == null) {
+                updatedUserEntity.setUsername(userEntity.getUsername());
             }
             updatedUserEntity.setId(userEntity.getId());
             updatedUserEntity = em.merge(updatedUserEntity);

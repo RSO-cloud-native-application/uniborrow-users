@@ -7,13 +7,20 @@ import javax.persistence.*;
 @NamedQueries(value = {
         @NamedQuery(
                 name = "UserEntity.getAll",
-                query = "SELECT u FROM UserEntity u")
+                query = "SELECT u FROM UserEntity u"),
+        @NamedQuery(
+                name = "UserEntity.getByUsername",
+                query = "SELECT u FROM UserEntity u WHERE :username = u.username"
+        )
 })
 public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "firstname")
     private String firstName;
@@ -54,5 +61,13 @@ public class UserEntity {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
