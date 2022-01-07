@@ -28,6 +28,8 @@ kumuluzee:
       data-source-health-check:
         type: liveness
         jndi-name: jdbc/UsersDB
+      etcd-health-check:
+        connection-url: http://localhost:2379/health
   metrics:
     servlet:
       enabled: true
