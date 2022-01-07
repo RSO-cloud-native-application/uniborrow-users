@@ -39,6 +39,16 @@ kumuluzee:
       - name: users-endpoint
         url-pattern: /v1/users*
         status-codes: "200, 500"
+  openapi-mp:
+    enabled: true
+    servlet:
+      mapping: /openapi
+    ui:
+      enabled: true
+      mapping: /openapi/ui
+  dev:
+    scan-libraries:
+      - users-lib
   logs:
     config-file: '<?xml version="1.0" encoding="UTF-8"?>
                             <Configuration name="comments">
