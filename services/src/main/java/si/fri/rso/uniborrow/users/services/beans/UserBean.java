@@ -1,5 +1,8 @@
 package si.fri.rso.uniborrow.users.services.beans;
 
+import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
+import org.eclipse.microprofile.faulttolerance.Fallback;
+import org.eclipse.microprofile.faulttolerance.Timeout;
 import si.fri.rso.uniborrow.users.lib.User;
 import si.fri.rso.uniborrow.users.models.converters.UserConverter;
 import si.fri.rso.uniborrow.users.models.entities.UserEntity;
@@ -9,6 +12,8 @@ import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.ws.rs.NotFoundException;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -21,6 +26,9 @@ public class UserBean {
     @Inject
     private EntityManager em;
 
+    @CircuitBreaker
+    @Timeout(value = 2, unit = ChronoUnit.SECONDS)
+    @Fallback(fallbackMethod = "getUsersFallback")
     public List<User> getUsers() {
         TypedQuery<UserEntity> query =
                 em.createNamedQuery("UserEntity.getAll", UserEntity.class);
@@ -28,12 +36,23 @@ public class UserBean {
         return resultList.stream().map(UserConverter::toDto).collect(Collectors.toList());
     }
 
+    public List<User> getUsersFallback() {
+        return new ArrayList<>();
+    }
+
+    @CircuitBreaker
+    @Fallback(fallbackMethod = "getUserFallback")
+    @Timeout(value = 2, unit = ChronoUnit.SECONDS)
     public User getUser(Integer id) {
         UserEntity userEntity = em.find(UserEntity.class, id);
         if (userEntity == null) {
             throw new NotFoundException();
         }
         return UserConverter.toDto(userEntity);
+    }
+
+    public User getUserFallback(Integer id) {
+        return null;
     }
 
     public User getUser(String username) {
